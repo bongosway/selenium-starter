@@ -1,0 +1,87 @@
+
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+ext {
+    gradleVersionProperty = '6.6.1'
+    testNGVersion = '+'
+    seleniumVersion = '4+'
+    webdriverManagerVersion = '+'
+}
+
+group 'org.bongosway.selenium'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir file('src/main/java')
+        }
+        resources {
+            srcDirs("src/main/resources")
+        }
+    }
+    test {
+        java {
+            srcDir file('src/test/java')
+        }
+        resources {
+            srcDir file('src/test/resources')
+        }
+    }
+}
+
+dependencies {
+    implementation 'org.testng:testng:' + testNGVersion
+    implementation 'org.seleniumhq.selenium:selenium-api:' + seleniumVersion
+    implementation 'org.seleniumhq.selenium:selenium-chrome-driver:' + seleniumVersion
+    implementation 'org.seleniumhq.selenium:selenium-firefox-driver:' + seleniumVersion
+    implementation 'org.seleniumhq.selenium:selenium-support:' + seleniumVersion
+    implementation 'io.github.bonigarcia:webdrivermanager:' + webdriverManagerVersion
+}
+
+project.ext.logDir = "${rootDir}/reports"
+
+test {
+    useTestNG() {
+        reports.html.enabled = true
+        reports.html.setDestination(file("${project.logDir}/html"))
+
+        testLogging {
+            events "started", "passed", "skipped", "failed"
+            // show standard out and standard error of the test JVM(s) on the console
+            showStandardStreams = true
+            // show full exception trace
+            exceptionFormat = 'short'
+            showStackTraces = true
+            showCauses = true
+            showExceptions = true
+        }
+    }
+}
+
+clean.doFirst {
+    delete "${rootDir}/target"
+    delete "${rootDir}/bin"
+    delete "${rootDir}/build"
+    delete "${rootDir}/out"
+    delete "${rootDir}/reports"
+    delete "${rootDir}/screenshots"
+    delete "${rootDir}/null"
+    println "Clean: Deleted bin, build, out, target, screenshots and reports directories"
+}
+
+clean.doLast {
+    mkdir "${rootDir}/reports"
+    println "Created reports directory"
+}
+
+test.dependsOn clean
