@@ -5,10 +5,10 @@ plugins {
 }
 
 ext {
-    gradleVersionProperty = '6.6.1'
+    gradleVersionProperty = '8.0.0'
     testNGVersion = '+'
-    seleniumVersion = '4+'
-    webdriverManagerVersion = '+'
+    seleniumVersion = '4.0.0'
+    webdriverManagerVersion = '5.0.3'
 }
 
 group 'org.bongosway.selenium'
@@ -19,25 +19,8 @@ sourceCompatibility = 11
 repositories {
     mavenCentral()
 }
-
-sourceSets {
-    main {
-        java {
-            srcDir file('src/main/java')
-        }
-        resources {
-            srcDirs("src/main/resources")
-        }
-    }
-    test {
-        java {
-            srcDir file('src/test/java')
-        }
-        resources {
-            srcDir file('src/test/resources')
-        }
-    }
-}
+sourceSets.main.java.srcDirs = ['src/main/java', 'src/main/resources']
+sourceSets.test.java.srcDirs = ['src/test/java', 'src/test/resources']
 
 dependencies {
     implementation 'org.testng:testng:' + testNGVersion
@@ -49,6 +32,10 @@ dependencies {
 }
 
 project.ext.logDir = "${rootDir}/reports"
+
+rootProject.tasks.named("processResources") {
+    duplicatesStrategy = 'exclude'
+}
 
 test {
     useTestNG() {
