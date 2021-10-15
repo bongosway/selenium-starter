@@ -54,9 +54,7 @@ public class TestBase {
 
   private WebDriver createChromeDriver() {
     WebDriverManager.chromedriver().setup();
-    String chromeDriverPath = WebDriverManager.chromedriver().getDownloadedDriverPath();
-    System.setProperty("webdriver.chrome.driver", chromeDriverPath);
-    sessionContext.putIfAbsent("ChromeDriver path: ", chromeDriverPath);
+    sessionContext.putIfAbsent("ChromeDriver path: ", System.getProperty("webdriver.chrome.driver"));
 
     return new ChromeDriver();
   }

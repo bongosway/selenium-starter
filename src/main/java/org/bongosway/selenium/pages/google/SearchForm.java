@@ -6,8 +6,7 @@ import static org.bongosway.selenium.helper.ElementInteractionHelper.getElement;
 import org.openqa.selenium.By;
 
 public class SearchForm {
-
-  private static final By searchFormAutocomplete = By.cssSelector("#searchform ul>li");
+  private static final By searchFormAutocomplete = By.cssSelector("form ul>li");
   private static final By inputField = By.name("q");
 
   public SearchForm search(String term) {
